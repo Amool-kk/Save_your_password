@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto | Login</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<style>
+
+    .box {
+        width: 500px;
+        margin: 25px auto;
+        text-align: center;
+        border: 1px solid #d4d1d1;
+    }
+
+    .cont {
+        width: 450px;
+        margin: auto;
+    }
+
+    .cont p {
+        margin: 15px;
+        font-weight: 400;
+        font-size: 20px;
+    }
+
+    .email,
+    .password {
+        position: relative;
+        margin: 45px auto;
+        width: 450px;
+    }
+
+    .email label,
+    .password label {
+        position: absolute;
+        top: -20px;
+        font-weight: 650;
+        font-size: 14px;
+    }
+
+    .email input,
+    .password input {
+        font-size: 20px;
+        padding: 4px 8px;
+        border: none;
+        outline: none;
+        border-bottom: 1px solid gray;
+        width: 435px;
+    }
+
+    .password label a {
+        text-decoration: none;
+        position: absolute;
+        right: -380px;
+        font-weight: 200;
+    }
+
+    .btn {
+        padding: 7px 10px;
+        font-size: 18px;
+        width: 450px;
+        background-color: orange;
+        border: none;
+        cursor: pointer;
+        margin-bottom: 25px;
+    }
+
+    .btn:hover {
+        background-color: rgba(255, 165, 0, .5);
+    }
+
+    .style {
+        position: relative;
+    }
+
+    .style div {
+        height: 0px;
+        border: 1px solid lightgray;
+
+        margin-bottom: 20px;
+    }
+
+    .cont .p {
+        padding: 2px 6px;
+        background-color: white;
+        position: absolute;
+        top: -22px;
+        left: 118px;
+        font-size: 14px;
+        color: #908a8a;
+    }
+
+    .otherbutton button {
+        background-color: #c5c2c2;
+        padding: 0px;
+        height: 35px;
+    }
+
+    .otherbutton button:hover {
+        background-color: rgba(0, 0, 0, .5);
+    }
+    .btn a{
+        color: black;
+        padding: 7px 140px;
+        text-decoration: none;
+    }
+</style>
+
+<body>
+    <nav>
+        <h1><a href="/">Crypto</a></h1>
+    </nav>
+    {{#if msg}}
+    <div class="msg">{{msg}}</div>
+    {{/if}}
+    <section>
+        <div class="box">
+            <div class="cont">
+                <p>Sign in with your Gmail account</p>
+                <form action="/login" method="post">
+                    <div class="email">
+                        <label for="email">Email</label>
+                        <input type="email" name="useremail" id="email" placeholder="Enter your Email">
+                    </div>
+                    <div class="password">
+                        <label for="password">Password
+                            <a href="/forgotpassword">Forgot Password</a>
+                        </label>
+                        <input type="password" name="password" id="password" placeholder="Enter your Password">
+                    </div>
+                    <div class="button">
+                        <button type="submit" class="btn submit">Login</button>
+                    </div>
+                </form>
+                <div class="style">
+                    <div></div>
+                    <p class="p">New to Online Test Portal?</p>
+                </div>
+                <div class="otherbutton">
+                    <button type="button" class="btn"><a href="registration">Create your Account</a></button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="js/login.js"></script>
+</body>
+
+</html>

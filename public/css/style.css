@@ -1,0 +1,135 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+nav {
+    text-align: center;
+    width: 500px;
+    margin: auto;
+}
+
+nav a {
+    margin-top: 20px;
+    text-decoration: none;
+    color: #7513e0;
+    font-size: 40px;
+    font-weight: bolder;
+}
+.box {
+    width: 500px;
+    margin: 25px auto;
+    text-align: center;
+    border: 1px solid #d4d1d1;
+    box-shadow: 0 0 20px 0 rgb(0 0 0 / 20%), 0 5px 5px 0 rgb(0 0 0 / 24%);
+}
+
+.cont {
+    width: 450px;
+    margin: auto;
+}
+
+.cont p {
+    margin: 15px;
+    font-weight: 400;
+    font-size: 20px;
+}
+
+.cont div{
+    position: relative;
+    margin: 45px auto;
+    width: 450px;
+}
+
+.cont div label {
+    position: absolute;
+    top: -20px;
+    font-weight: 650;
+    font-size: 14px;
+ 
+}
+
+.cont div input,.sbox{
+    font-size: 20px;
+    padding: 4px 8px;
+    outline: none;
+    width: 435px;
+}
+
+.userName,.userEmail,.Password,.cPassword,.sbox{
+    border: none;
+    border-bottom: 1px solid gray;
+}
+.done{
+    border-bottom: 4px solid green;
+}
+.error{
+    border-bottom: 4px solid red;
+    color: red;
+}
+
+.cont div label a {
+    text-decoration: none;
+    position: absolute;
+    right: -380px;
+    font-weight: 200;
+}
+
+.cont div .div small{
+    position: absolute;
+    left: 0px;
+    color: red;
+    top: -43px;
+    font-weight: 600;
+}
+
+.btn {
+    padding: 7px 10px;
+    font-size: 18px;
+    width: 450px;
+    background-color: orange;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 25px;
+    outline: none;
+    font-weight: 500;
+}
+
+.btn:hover {
+    background-color: rgba(255, 165, 0, .5);
+}
+
+.style {
+    position: relative;
+}
+
+.style div {
+    height: 0px;
+    border: 1px solid lightgray;
+
+    margin-bottom: 20px;
+}
+
+.cont .p {
+    padding: 2px 6px;
+    background-color: white;
+    position: absolute;
+    top: -22px;
+    left: 118px;
+    font-size: 14px;
+    color: #908a8a;
+}
+
+.otherbutton button {
+    background-color: #c5c2c2;
+    outline: none;
+    font-weight: 500;
+}
+
+.otherbutton button:hover {
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.btn a{
+    color: black;
+    text-decoration: none;
+}

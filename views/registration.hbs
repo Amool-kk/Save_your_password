@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto | Registration</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<style>
+  
+</style>
+
+<body>
+    <nav>
+        <h1><a href="/">Crypto</a></h1>
+    </nav>
+    <section>
+        <div class="box">
+            <div class="cont">
+                <form action="/registration" method="post">
+                    <div class="username">
+                        <label for="username">UserName</label>
+                        <input type="text" class="userName" name="username" placeholder="Enter your UserName">
+                        <div class="div"></div>
+                        {{!-- <small>sdfsdf</small> --}}
+                    </div>
+                    <div class="useremail">
+                        <label for="useremail">UserEmail</label>
+                        <input type="email" name="useremail" class="userEmail" placeholder="Enter your Email ID">
+                        <div class="div"></div>
+                    </div>
+                    <div class="password">
+                        <label for="password">Password</label>
+                        <input type="password" class="Password" name="password" placeholder="Enter your Password">
+                        <div class="div"></div>
+                    </div>
+                    <div class="password">
+                        <label for="cpassword">Conform Password</label>
+                        <input type="password" class="cPassword" name="cpassword" placeholder="Enter your Conform Password">
+                        <div class="div"></div>
+                    </div>
+                    <div class="button">
+                        <button type="submit" class="btn submit">Sign Up</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script src="js/create.js"></script>
+</body>
+
+</html>
