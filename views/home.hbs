@@ -7,10 +7,138 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Password</title>
     <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
 </head>
+<style>
+    .navbar-light .navbar-toggler {
+        color: rgba(0, 0, 0, .5);
+        border-color: rgba(0, 0, 0, .1);
+        margin-left: -10px;
+    }
+
+    .btn {
+        padding: 7px 10px;
+        font-size: 18px;
+        width: 200px;
+        background-color: orange;
+        border: none;
+        cursor: pointer;
+        margin-bottom: 25px;
+        margin-top: 25px;
+        color: black;
+    }
+
+    .logoutbtn {
+        padding: 3px 5px;
+    }
+
+
+    @media only screen and (max-width:990px) {
+        .searchbox {
+            margin-top: 0px;
+            font-size: 16px;
+        }
+
+        .searchbox input {
+            width: 120px;
+        }
+
+        .searchbox .btn {
+            padding: 3px 4px;
+            font-size: 17px;
+            width: 58px;
+        }
+
+        .title {
+            margin-top: 40px;
+        }
+
+        .menu {
+            position: relative;
+            width: 100%;
+            margin: 0px;
+            left: -15px;
+        }
+
+        section {
+            width: 250px;
+            font-size: 16px;
+        }
+
+        .Url input,
+        .USERNAME input,
+        .Passbox input {
+            font-size: 16px;
+            padding: 4px 8px;
+            border: none;
+            outline: none;
+            border-bottom: 1px solid gray;
+            width: 200px;
+        }
+
+    }
+
+    @media only screen and (max-width:575px) {
+        .searchbox {
+            margin-top: 0px;
+            font-size: 16px;
+        }
+
+        .searchbox input {
+            width: 120px;
+        }
+
+        .Url input,
+        .USERNAME input,
+        .Passbox input {
+            font-size: 20px;
+            padding: 4px 8px;
+            border: none;
+            outline: none;
+            border-bottom: 1px solid gray;
+            width: 150px;
+        }
+    }
+</style>
+
 <body>
-    <nav>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <h1 class="navbar-brand">Manage Password</h1>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <form class="form-inline searchbox" action="/search" method="GET">
+
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searchTxt"
+                class="searchTxt">
+            <button class="btn btn-outline-success my-2 my-sm-0 searchbtn" type="submit">Search</button>
+        </form>
+        <div class="collapse navbar-collapse menu" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <div class="homemenu">
+                    <a class="btn logoutbtn" href="/logout">Logout</a>
+                    {{#if user}}
+                    <a href="#">Signed In As {{user.username}}</a>
+                    {{else}}
+                    <a href="/login">Sign In</a>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    {{!-- <nav>
         <h1>Manage Password</h1>
+        <div class="searchbox">
+            <input type="search" name="searchtxt" class="searchtxt">
+            <button class="btn" type="submit" name="searchbtn">Search</button>
+        </div>
         <ul>
             <a href="/logout">Logout</a>
             {{#if user}}
@@ -19,15 +147,15 @@
             <a href="/login">Sign In</a>
             {{/if}}
         </ul>
-    </nav>
-    {{!-- <div class="msg">
+    </nav> --}}
+    <div class="msg">
         {{#if msg}}
         <div class="error">{{msg}}</div>
         {{else}}
         <div class="done">{{msg}}</div>
         {{/if}}
-    </div> --}}
-    <h2>You Can Save your password</h2>
+    </div>
+    <h2 class="title">You Can Save your password</h2>
     <section>
         <div class="form">
             <form action="/data-post" method="POST">
@@ -42,46 +170,143 @@
                 <div class="Passbox">
                     <label for="passbox">Password</label>
                     <input type="password" name="Spassword" class="password" placeholder="Enter your password">
+                    <div class="suggest"></div>
                 </div>
-
-                <button type="submit" class="btn">Add</button>
-
+                <button type="submit" class="btn savebtn">Add</button>
             </form>
         </div>
     </section>
     <article>
         <div class="viewbox">
-            <div class="viewcont">
+            <div class="viewcont" {{#if data}} {{else}} style="display: block; align-item: center; margin-top: 20px"
+                {{/if}}>
                 {{#if data}}
                 {{#each data}}
                 <div class="view">
                     <div class="websiteurl items">
-                        <h5>Url:- <p name="thisurl">{{this.url}}</p>
+                        <h5 style="font-size: 18px; ">Url:-
+                            <p name="thisurl">{{this.url}}</p>
                         </h5>
                     </div>
                     <div class="websiteusername items">
-                        <h5>Username:- <p name="thisusername">{{this.USERNAME}}</p>
+                        <h5 style="font-size: 18px;">Username:-
+                            <p name="thisusername">{{this.USERNAME}}</p>
                         </h5>
                     </div>
                     <div class="savepassword items">
-                        <h5>Password:- <p name="thisspassword">{{this.Spassword}}</p>
+                        </h5 style="font-size: 18px;" >Password:-
+                        <input type="password" readonly="true" style="user-select:all; cursor: pointer;"
+                            class="thispassword" value="{{this.Spassword}}">
+                        <P class="takein"></P>
                         </h5>
                     </div>
+
                     <div class="button items">
                         <form action="/Delete" method="post">
-                            <button type="submit" name="deleteBtn" value="{{this.url}}" class="btn">Delete</button>
+                            <button type="submit" name="deleteBtn" value="{{this._id}}" class="btn">Delete</button>
                         </form>
                     </div>
                 </div>
                 {{/each}}
             </div>
             {{else}}
-            <div class="msg">
-                Nothing to show! Use "Add" section above to Save Password with UserName.
-            </div>
+            <p style="display:block; text-align:center">Nothing to show! Use "Add" section above to Save Password with
+                UserName.</p>
             {{/if}}
         </div>
     </article>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+
+    <script>
+
+        const password = document.querySelector('.password');
+        const suggest = document.querySelector('.suggest');
+        const copy = document.querySelector('copy');
+        const searchTxt = document.querySelector('searchTxt');
+        const searchbtn = document.querySelector('searchbtn');
+        const copymsg = document.querySelectorAll('.copymsg');
+        const takein = document.querySelectorAll('.takein');
+        const thispassword = document.querySelectorAll('.thispassword');
+
+
+        for (let i = 0; i < thispassword.length; i++) {
+            const item = thispassword[i]
+            item.addEventListener('mouseover', () => {
+                item.setAttribute('type', 'text')
+            })
+            item.addEventListener('mouseout', () => {
+                item.setAttribute('type', 'password')
+            })
+            item.addEventListener('click', event => {
+                copyToClipboard(item.value, i)
+                const span = document.createElement('span');
+                span.innerHTML = "Copied"
+                
+                takein[i].appendChild(span)
+                setTimeout(() => {
+                    takein[i].removeChild(span)
+                }, 2000);
+            })
+
+        }
+
+        // for copy 
+        function copyToClipboard(data, index) {
+            const el = document.createElement('textarea');
+            
+            el.value = data;
+            document.body.appendChild(el);
+            el.select()
+            document.execCommand('copy')
+            document.body.removeChild(el)
+        }
+
+
+        // for generate password
+        function generatePassword() {
+            var length = 15,
+                charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+=\|][}{':;></",
+                retVal = "";
+            for (var i = 0, n = charset.length; i < length; ++i) {
+                retVal += charset.charAt(Math.floor(Math.random() * n));
+            }
+            return retVal;
+        }
+
+
+        password.addEventListener('click', async () => {
+            if (suggest.children.length == 0) {
+                console.log(suggest.children.length)
+                console.log("clicked")
+                const generatedpassword = await generatePassword()
+                console.log(generatedpassword)
+                let html = ""
+                html = await `<p><span>Use this strong password:- </span><br>${generatedpassword}</p>`;
+                suggest.innerHTML += html
+                suggest.addEventListener('click', () => {
+                    password.value = generatedpassword
+                    suggest.innerHTML = ""
+                })
+            }
+            else {
+                console.log(suggest.children.length)
+            }
+
+        })
+
+
+
+    </script>
 </body>
 
 </html>

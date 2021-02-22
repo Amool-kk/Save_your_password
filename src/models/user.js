@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
+const add = require("./post")
+
+
 
 const userSchema = new mongoose.Schema({
     username:String,
@@ -15,11 +18,7 @@ const userSchema = new mongoose.Schema({
     cpassword:{
         type:String,
     },
-    data:[{
-        url:String,
-        USERNAME:String,
-        Spassword:String
-    }],
+    
     tokens:[{
         tokenid:{
             type:String,
@@ -60,3 +59,11 @@ userSchema.pre("save",async function(next){
 const userdata = new mongoose.model("userdata", userSchema);
 
 module.exports = userdata;
+
+
+
+// data:[{
+//     url:String,
+//     USERNAME:String,
+//     Spassword:String
+// }],

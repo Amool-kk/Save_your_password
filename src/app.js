@@ -10,7 +10,10 @@ const mongoClient = require('mongodb').MongoClient()
 
 require("./db/conn");
 const userdata = require("./models/user");
+const add = require("./models/post")
 const auth = require("./middleware/auth");
+const { db } = require('./models/post');
+const { constants } = require('buffer');
 
 
 
@@ -31,6 +34,7 @@ app.use(express.static(static_path))
 app.set("view engine", "hbs");
 app.set("views", views_path);
 
+
 // some functions
 const getdata = async (email) => {
     // for add data
@@ -43,7 +47,7 @@ const getdata = async (email) => {
                 const Spassword = await cryptr.encrypt(req.body.Spassword)
                 const signeddata = await userdata.find({ useremail: email })
                 // console.log(signeddata)
-                if(req.body.url != ""&& req.body.USERNAME != ""&& req.body.Spassword != ""){
+                if (req.body.url != "" && req.body.USERNAME != "" && req.body.Spassword != "") {
                     const updateData = await userdata.updateOne(
                         { useremail: email },
                         {
@@ -57,25 +61,25 @@ const getdata = async (email) => {
                         }
                     );
                     res.status(201).redirect("/")
-    
-                }else{
+
+                } else {
                     const error = "Fill these entery"
                     res.status(201).redirect('/')
                 }
-                
-                
+
+
             } catch (e) {
                 console.log(`error in add post ${e}`)
             }
 
         })
-        
+
     } catch (error) {
         console.log(error)
     }
 
     // for delete 
-    app.post('/Delete',async (req, res) => {
+    app.post('/Delete', async (req, res) => {
         try {
             const btn = req.body.deleteBtn
             const signeddata = await userdata.find({ useremail: email })
@@ -84,18 +88,18 @@ const getdata = async (email) => {
             // console.log(datas)
             // const requiredata = userdata.find({_id : "6030a49a9f28903b08180083"})
             // console.log(requiredata)
-            console.log(userdata.find({useremail: email}))
+            console.log(userdata.find({ useremail: email }))
             const deleteData = await userdata.updateOne(
-                {useremail: email},
+                { useremail: email },
                 {
-                    $pull:{
-                        data: {url : req.body.thisurl}
+                    $pull: {
+                        data: { url: req.body.thisurl }
                     }
                 },
-                {safe: true}
+                { safe: true }
             )
             console.log(btn)
-            
+
             res.status(201).redirect('/')
         } catch (error) {
             console.log(error, "error in delete btn")
@@ -103,26 +107,109 @@ const getdata = async (email) => {
     })
 
 }
-console.log()
+
+// for read data from add collection
+const readdata = async (email) => {
+    const result = await add.find({ id: email })
+    // console.log(typeof(result))
+    return result
+}
+
+// for delete from add collection
+const deletedata = async (id) => {
+    const result = await add.deleteOne({ _id: id })
+    return result
+}
 
 // for home page
 app.get('/', auth, async (req, res) => {
-
-    const data = req.user.data
-    const t = 0;
+    // const data = req.user.data
+    req.query.searchTxt = ""
+    const datalist = await readdata(req.user.useremail);
     const datas = []
-    for (let i = 0; i < data.length; i++) {
-        const element = data[i];
+    for (let i = 0; i < datalist.length; i++) {
+        const element = datalist[i];
         const Spasswordvalue = cryptr.decrypt(element.Spassword)
         element["Spassword"] = Spasswordvalue
         datas.push(element)
-        
     }
-    res.render("home", { user: req.user, data: datas, length: datas.length})
-    getdata(req.user.useremail)
+
+    res.render("home", { user: req.user, data: datas, length: datas.length })
+    // getdata(req.user.useremail)
     // console.log(typeof (datas))
     // console.log(add.find({}))
 });
+
+
+// post request for delete 
+app.post('/Delete', auth, async (req, res) => {
+    try {
+        
+        const datalist = await deletedata(req.body.deleteBtn)
+        res.redirect('/')
+    } catch (error) {
+        console.log(error+"error in delete post request")
+    }
+})
+
+
+// for search 
+app.get('/search',auth, async (req,res)=>{
+    try{
+        let searchTxt = req.query.searchTxt;
+        console.log(searchTxt)
+        if(searchTxt !=""){
+            const result1 = await add.find({USERNAME: {$regex: searchTxt,$options: '$i'}})
+            const result2 = await add.find({url: {$regex: searchTxt,$options: '$i'}})
+        // console.log(result);
+        const datas = []
+        for (let i = 0; i < result1.length; i++) {
+            const element = result1[i];
+            const Spasswordvalue = cryptr.decrypt(element.Spassword)
+            element["Spassword"] = Spasswordvalue
+            datas.push(element)
+        }
+        for (let i = 0; i < result2.length; i++) {
+            const element = result2[i];
+            const Spasswordvalue = cryptr.decrypt(element.Spassword)
+            element["Spassword"] = Spasswordvalue
+            datas.push(element)
+        }
+        
+        res.render("home", { user: req.user, data: datas, length: datas.length})
+        }else{
+            res.redirect('/')
+        }
+    }catch(error){
+        console.log(error+"error in search");
+    }
+    
+})
+
+// save data in database
+app.post("/data-post", auth, async (req, res) => {
+    try {
+        if (req.body.url != "" && req.body.USERNAME != "" && req.body.Spassword != "") {
+            const data = new add({
+                id: req.user.useremail,
+                url: req.body.url,
+                USERNAME: req.body.USERNAME,
+                Spassword: req.body.Spassword
+            });
+
+            const result = await data.save()
+            // console.log(result)
+            res.redirect('/')
+        } else {
+            res.redirect('/')
+        }
+
+    } catch (error) {
+        console.log(error)
+        res.redirect('/')
+    }
+
+})
 
 
 
@@ -138,7 +225,7 @@ app.get('/logout', auth, async (req, res) => {
 
         await req.user.save()
 
-        res.redirect("login", {msg: "Logout is Successful"});
+        res.redirect("login",);
     } catch (error) {
         res.status(500).redirect("/")
     }
@@ -168,10 +255,10 @@ app.post("/login", async (req, res) => {
 
         if (Password && email != "" && password != "") {
             const results = await result.save();
-            res.status(201).redirect("/",{msg: "Login is Successful"});
+            res.status(201).redirect("/",);
         } else {
             console.log("login not ok");
-            res.status(400).redirect("login",{msg: "Try Again with correct entry"});
+            res.status(400).redirect("login",);
         }
     } catch (error) {
         console.log(error)
